@@ -1,7 +1,7 @@
 import { gql } from "apollo-server";
 import { ProductCreateViewModel } from "#root/models/view.models/ProductCreateViewModel";
 import { Product } from "#root/models/dtos";
-
+import paginate from "#root/helpers/paginate";
 export const typeDef = gql`
   type Product {
     Id: ID!
@@ -15,7 +15,7 @@ export const typeDef = gql`
   }
 
   extend type Query {
-    products: [Product!]!
+    products(pageNum: Int!): [Product!]!
   }
 
   extend type Mutation {
@@ -27,8 +27,11 @@ const createProduct = (context: any, { input }: { input: ProductCreateViewModel 
   return Product.create(input);
 };
 
-const getProductList = () => {
-  return Product.findAll();
+const getProductList = (context: any, { pageNum }: { pageNum: any }) => {
+  return Product.findAll({
+    ...paginate(pageNum || 1, 20),
+    where: {}
+  });
 };
 
 export const resolvers = {
