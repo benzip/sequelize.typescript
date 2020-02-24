@@ -27,19 +27,19 @@ const query = gql`
 
 const columns = [
   {
-    title: "Product name",
+    title: "Role id",
     dataIndex: "ProductName",
     key: "ProductName",
     render: (text: any) => <a>{text}</a>
   },
   {
-    title: "Search name",
+    title: "Role name",
     dataIndex: "SearchName",
     key: "SearchName"
   }
 ];
 
-const ProductListTableComponent = () => {
+const UserRoleListTableComponent = () => {
   const { data, loading, fetchMore } = useQuery<QueryData>(query, {
     variables: { pageNum: 1 },
     notifyOnNetworkStatusChange: true
@@ -74,4 +74,4 @@ const ProductListTableComponent = () => {
   );
 };
 
-export default ProductListTableComponent;
+export default UserRoleListTableComponent;

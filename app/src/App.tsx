@@ -1,12 +1,15 @@
 import React from "react";
-import ProductListContainer from "./pages/product.list/product.list.container.component";
+import Layout1 from "./layout/layout1";
 import "./App.css";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <ProductListContainer />
-    </div>
+    <React.Fragment>
+      <Router>
+        <Layout1></Layout1>
+      </Router>
+    </React.Fragment>
   );
 }
 
