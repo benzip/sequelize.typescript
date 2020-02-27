@@ -1,12 +1,13 @@
 import { gql } from "apollo-server";
 import { UserCreateViewModel } from "#root/models/view.models/UserCreateViewModel";
-import { User } from "#root/models/dtos";
+import { User, UserRole } from "#root/models/dtos";
 
 export const typeDef = gql`
   type User {
     UserId: ID!
     UserRole: String!
     Email: String!
+    UserRoleDTO: UserRole!
   }
 
   input UserCreateViewModel {
@@ -35,7 +36,14 @@ const createUser = async (context: any, { input }: { input: UserCreateViewModel 
 };
 
 const getUserList = () => {
-  return User.findAll();
+  return User.findAll({
+    include: [
+      {
+        model: UserRole,
+        as: "UserRoleDTO"
+      }
+    ]
+  });
 };
 
 export const resolvers = {

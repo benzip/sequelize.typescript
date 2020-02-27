@@ -1,6 +1,10 @@
-import { Model } from "sequelize-typescript";
+import { Model, BelongsTo } from "sequelize-typescript";
+import { User } from "#root/models/dtos/User";
 
 export class UserRole extends Model {
-  Id!: Number;
+  Id!: String;
   RoleName!: String;
+
+  // @BelongsTo(() => User)
+  // User!: User;
 }

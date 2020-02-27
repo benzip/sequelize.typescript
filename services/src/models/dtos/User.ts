@@ -1,3 +1,4 @@
+import { UserRole } from "./UserRole";
 import { Model } from "sequelize-typescript";
 
 export class User extends Model {
@@ -5,4 +6,5 @@ export class User extends Model {
   Password!: String;
   UserRole!: String;
   Email!: String;
+  // UserRoleDTO!: UserRole;
 }

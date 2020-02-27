@@ -1,3 +1,4 @@
+import { UserRole } from "./../models/dtos/UserRole";
 import { gql } from "apollo-server";
 import { ProductCreateViewModel } from "#root/models/view.models/ProductCreateViewModel";
 import { Product } from "#root/models/dtos";
@@ -7,6 +8,7 @@ export const typeDef = gql`
     Id: ID!
     ProductName: String!
     SearchName: String!
+    UserRoleDTO: [UserRole!]!
   }
 
   input ProductCreateViewModel {

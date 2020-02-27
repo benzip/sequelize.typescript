@@ -1,5 +1,6 @@
 import { DataType, Sequelize } from "sequelize-typescript";
 import { User } from "#root/models/dtos/User";
+import { UserRole } from "#root/models/dtos/UserRole";
 export const UserModelConfiguration = (sequelize: Sequelize) => {
   User.init(
     {

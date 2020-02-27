@@ -1,13 +1,13 @@
 import { Layout, Menu, Icon } from "antd";
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
 import ProductListContainer from "../pages/product.list/product.list.container.component";
 import UserListContainer from "../pages/user.list/user.list.container.component";
 import UserRoleListContainer from "../pages/user.role.list/user.role.list.container.component";
 import { withRouter } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 
-const Layout1 = (props: any) => {
+const Layout1 = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const history = useHistory();
   const toggle = () => {
