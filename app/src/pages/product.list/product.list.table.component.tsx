@@ -16,17 +16,34 @@ const columns = [
 ];
 
 const ProductListTableComponent = (props: any) => {
+  const handleTableChange = (pagination: any, filters: any, sorter: any) => {
+    // const pager = { ...this.state.pagination };
+    // pager.current = pagination.current;
+    // this.setState({
+    //   pagination: pager
+    // });
+    // this.fetch({
+    //   results: pagination.pageSize,
+    //   page: pagination.current,
+    //   sortField: sorter.field,
+    //   sortOrder: sorter.order,
+    //   ...filters
+    // });
+    props.handlePageChange(pagination.current);
+  };
+
   return (
     <Table
+      scroll={{ y: "67vh" }}
       columns={columns}
-      dataSource={props.data?.products}
+      dataSource={props.data}
       rowKey="Id"
       loading={props.loading}
       pagination={{
-        defaultCurrent: 1,
-        total: 200,
-        onChange: (pageNum: number) => props.handlePageChange(pageNum)
+        total: props.totalCount,
+        pageSize: 20
       }}
+      onChange={handleTableChange}
     />
   );
 };
