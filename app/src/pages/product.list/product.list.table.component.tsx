@@ -1,32 +1,9 @@
 import * as React from "react";
-import { Table } from "antd";
+import { Table, Button } from "antd";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-
-const columns = [
-  {
-    title: "Product name",
-    dataIndex: "ProductName",
-    key: "ProductName",
-    render: (text: any) => <a>{text}</a>
-  },
-  {
-    title: "Search name",
-    dataIndex: "SearchName",
-    key: "SearchName"
-  }
-];
-
-interface Product {
-  Id: number;
-  ProductName: string;
-  SearchName: string;
-}
-
-interface ProductQueryViewModel {
-  Data: Product[];
-  TotalCount: number;
-}
+import Product from "../../models/product";
+import ProductQueryViewModel from "../../models/product.query.viewmodel";
 
 interface QueryData {
   products: ProductQueryViewModel;
@@ -46,6 +23,31 @@ const query = gql`
 `;
 
 const ProductListTableComponent = (props: any) => {
+  const columns = [
+    {
+      title: "Product name",
+      dataIndex: "ProductName",
+      key: "ProductName",
+      render: (text: any) => <a>{text}</a>
+    },
+    {
+      title: "Search name",
+      dataIndex: "SearchName",
+      key: "SearchName"
+    },
+    {
+      dataIndex: "operation",
+      render: (_: any, record: Product) => {
+        return (
+          <Button onClick={() => edit(record)} type="dashed">
+            {" "}
+            Edit
+          </Button>
+        );
+      }
+    }
+  ];
+
   const { data, loading, fetchMore } = useQuery<QueryData>(query, {
     variables: { pageNum: 1, searchText: props.searchText, withTotalCount: props.withTotalCount },
     notifyOnNetworkStatusChange: true,
@@ -53,6 +55,10 @@ const ProductListTableComponent = (props: any) => {
       props.handleLoadComplete();
     }
   });
+
+  const edit = (record: Product) => {
+    props.handleEdit(record);
+  };
 
   const handleTableChange = (pagination: any, filters: any, sorter: any) => {
     props.handleLoadind();
