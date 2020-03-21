@@ -32,7 +32,7 @@ const ProductEntryForm = (props: any) => {
   });
 
   const handleProductCategoryChange = (value: any) => {
-    props.form.setFields([{ name: ["Category"], value: value }]);
+    props.form.setFields([{ name: ["Category"], value: parseInt(value) }]);
   };
 
   const EntryForm = () => {
@@ -45,7 +45,7 @@ const ProductEntryForm = (props: any) => {
           <Input placeholder="T shirt" />
         </Form.Item>
         <Form.Item label="Category" name="Category" rules={[{ required: true, message: "Please input category!" }]}>
-          <SearchComboBox handleChange={handleProductCategoryChange}></SearchComboBox>
+          {query && <SearchComboBox query={query} searchText={props.selectedRecord?.CategoryDTO.Name} handleChange={handleProductCategoryChange}></SearchComboBox>}
         </Form.Item>
       </React.Fragment>
     );

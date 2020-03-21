@@ -1,5 +1,5 @@
 import { gql } from "apollo-server";
-import { ProductCreateViewModel } from "#root/models/view.models/ProductCreateViewModel";
+import { ProductCategoryMutationViewModel } from "#root/models/view.models/ProductCategoryMutationViewModel";
 import paginate from "#root/helpers/paginate";
 import { Op } from "sequelize";
 import { ProductCategory } from "#root/models/dtos";
@@ -14,7 +14,8 @@ export const typeDef = gql`
     TotalCount: Int!
   }
 
-  input ProductCategoryCreateViewModel {
+  input ProductCategoryMutationViewModel {
+    Id: ID!
     Name: String!
   }
 
@@ -23,11 +24,11 @@ export const typeDef = gql`
   }
 
   extend type Mutation {
-    create(input: ProductCreateViewModel): ProductCategory!
+    createProductCategory(input: ProductCategoryMutationViewModel): ProductCategory!
   }
 `;
 
-const create = (context: any, { input }: { input: ProductCreateViewModel }) => {
+const create = (context: any, { input }: { input: ProductCategoryMutationViewModel }) => {
   return ProductCategory.create(input);
 };
 
@@ -56,6 +57,6 @@ export const resolvers = {
     productCategories: getList
   },
   Mutation: {
-    create: create
+    createProductCategory: create
   }
 };

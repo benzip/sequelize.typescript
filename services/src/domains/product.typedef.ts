@@ -1,13 +1,14 @@
 import { ProductCategory } from "./../models/dtos/ProductCategory";
 import { UserRole } from "./../models/dtos/UserRole";
 import { gql } from "apollo-server";
-import { ProductCreateViewModel } from "#root/models/view.models/ProductCreateViewModel";
+import { ProductMutationViewModel } from "#root/models/view.models/ProductMutationViewModel";
 import { Product } from "#root/models/dtos";
 import paginate from "#root/helpers/paginate";
 import { Op } from "sequelize";
+import { ProductIdentityVIewModel } from "#root/models/view.models/ProductIdentityVIewModel";
 export const typeDef = gql`
   type Product {
-    Id: ID!
+    Id: Int!
     ProductName: String!
     SearchName: String!
     Category: Int!
@@ -19,9 +20,14 @@ export const typeDef = gql`
     TotalCount: Int!
   }
 
-  input ProductCreateViewModel {
+  input ProductMutationViewModel {
     ProductName: String!
     SearchName: String!
+    Category: Int!
+  }
+
+  input ProductIdentityViewModel {
+    Id: Int!
   }
 
   extend type Query {
@@ -29,13 +35,43 @@ export const typeDef = gql`
   }
 
   extend type Mutation {
-    createProduct(input: ProductCreateViewModel): Product!
+    createProduct(input: ProductMutationViewModel): Product!
+    updateProduct(id: ProductIdentityViewModel, input: ProductMutationViewModel): Product!
+    deleteProduct(id: ProductIdentityViewModel): Int!
   }
 `;
 
-const create = (context: any, { input }: { input: ProductCreateViewModel }) => {
-  return Product.create(input);
+const create = async (context: any, { input }: { input: ProductMutationViewModel }) => {
+  let product: Product = await Product.create({ ...input });
+  return Product.findOne({
+    where: { Id: product.Id },
+    include: [
+      {
+        model: ProductCategory,
+        as: "CategoryDTO"
+      }
+    ]
+  });
 };
+
+const update = async (context: any, { id, input }: { id: ProductIdentityVIewModel; input: ProductMutationViewModel }) => {
+  await Product.update({ ...input }, { where: { Id: id.Id } });
+
+  return Product.findOne({
+    where: { Id: 1 },
+    include: [
+      {
+        model: ProductCategory,
+        as: "CategoryDTO"
+      }
+    ]
+  });
+};
+
+const deleteData = async (context: any, { id }: { id: ProductIdentityVIewModel }) => {
+  return Product.destroy({ where: { Id: id.Id } });
+};
+
 const getList = async (context: any, { pageNum, searchText, withTotalCount }: { pageNum: any; searchText: any; withTotalCount: boolean }) => {
   let totalCount = -1;
   let queryResult;
@@ -67,6 +103,8 @@ export const resolvers = {
     products: getList
   },
   Mutation: {
-    create: create
+    createProduct: create,
+    updateProduct: update,
+    deleteProduct: deleteData
   }
 };

@@ -15,26 +15,14 @@ interface ComponentState {
   value: any;
 }
 
-const query = gql`
-  query ProductCategories($pageNum: Int!, $searchText: String!, $withTotalCount: Boolean!) {
-    productCategories(pageNum: $pageNum, searchText: $searchText, withTotalCount: $withTotalCount) {
-      Data {
-        Id
-        Name
-      }
-      TotalCount
-    }
-  }
-`;
-
 const SearchComboBox = (props: any) => {
   const [state, setState] = React.useState<ComponentState>({
     options: [],
-    value: props.value
+    value: props.value || ""
   });
 
-  const { data, loading, fetchMore } = useQuery<QueryData>(query, {
-    variables: { pageNum: -1, searchText: "", withTotalCount: true },
+  const { data, loading, fetchMore } = useQuery<QueryData>(props.query, {
+    variables: { pageNum: -1, searchText: props.searchText || "", withTotalCount: true },
     notifyOnNetworkStatusChange: true,
     onCompleted: data => {}
   });
@@ -70,16 +58,15 @@ const SearchComboBox = (props: any) => {
   };
 
   const options = data?.productCategories.Data.map((d: ProductCategory) => (
-    <Option key={d.Id} value={d.Id}>
+    <Option key={d.Id} value={d.Id.toString()}>
       {d.Name}
     </Option>
   ));
 
-  console.log(props);
   return (
     <Select
       showSearch
-      value={state.value}
+      value={state.value.toString()}
       placeholder={props.placeholder}
       style={props.style}
       defaultActiveFirstOption={false}

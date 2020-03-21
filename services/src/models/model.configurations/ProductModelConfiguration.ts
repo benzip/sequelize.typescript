@@ -9,7 +9,7 @@ export const ProductModelConfiguration = (sequelize: Sequelize) => {
         type: DataType.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false
+        allowNull: true
       },
       ProductName: {
         type: new DataType.STRING(100),

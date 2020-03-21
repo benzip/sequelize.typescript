@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Modal } from "antd";
 import { Form } from "antd";
-import { FormInstance } from "antd/lib/form/util";
 
 const formItemLayout = {
   labelCol: {
@@ -24,10 +23,8 @@ const formItemLayout = {
 
 const FormDialog = (props: any) => {
   const handleOk = () => {
-    props.onSubmit(props.form);
+    props.onSubmit();
   };
-
-  console.log(props.form.getFieldsValue());
 
   return (
     <Modal title={props.title} visible={props.visible} onOk={handleOk} confirmLoading={props.confirmLoading} onCancel={props.onCancel} width={props.width}>
