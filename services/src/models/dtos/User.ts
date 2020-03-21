@@ -6,5 +6,4 @@ export class User extends Model {
   Password!: String;
   UserRole!: String;
   Email!: String;
-  // UserRoleDTO!: UserRole;
 }

@@ -5,7 +5,8 @@ import { useQuery } from "@apollo/react-hooks";
 import { Input, Form, DatePicker, TimePicker, Select, Cascader, InputNumber } from "antd";
 import Product from "src/models/product";
 import FormDialog from "../../components/form.dialog";
-import ProductEntryForm from "./form/product-entry-form";
+import ProductEntryForm from "./form/product.entry.form";
+import { FormInstance } from "antd/lib/form/util";
 
 const { Search } = Input;
 
@@ -19,6 +20,7 @@ interface ComponentState {
 }
 
 const ProductListContainerComponent = () => {
+  const [form] = Form.useForm();
   const [state, setSate] = React.useState<ComponentState>({
     searchText: "",
     withTotalCount: true,
@@ -59,12 +61,18 @@ const ProductListContainerComponent = () => {
     });
   };
 
-  const handleDialogEditOk = (record: Product) => {
-    setSate({
-      ...state,
-      // showEditDialog: false,
-      saveLoading: true
-    });
+  const handleSubmitForm = async () => {
+    try {
+      const validateResult = await form.validateFields();
+      const values = form.getFieldsValue();
+      console.log("Success:", values);
+      setSate({
+        ...state,
+        saveLoading: false
+      });
+    } catch (errorInfo) {
+      console.log("Failed:", errorInfo);
+    }
   };
   const handleDialogEditClose = () => {
     setSate({
@@ -82,8 +90,8 @@ const ProductListContainerComponent = () => {
         }
       ></ListPageLayout>
       {state.showEditDialog && (
-        <FormDialog title="Product entry" visible={state.showEditDialog} onOk={handleDialogEditOk} confirmLoading={state.saveLoading} onCancel={handleDialogEditClose}  >
-          <ProductEntryForm></ProductEntryForm>
+        <FormDialog form={form} title="Product entry" visible={state.showEditDialog} onSubmit={handleSubmitForm} confirmLoading={state.saveLoading} onCancel={handleDialogEditClose}>
+          <ProductEntryForm form={form}></ProductEntryForm>
         </FormDialog>
       )}
     </React.Fragment>

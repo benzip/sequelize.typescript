@@ -9,7 +9,6 @@ export const ProductModelConfiguration = (sequelize: Sequelize) => {
         type: DataType.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
-
         allowNull: false
       },
       ProductName: {
@@ -35,6 +34,10 @@ export const ProductModelConfiguration = (sequelize: Sequelize) => {
             msg: "Search must be filled in."
           }
         }
+      },
+      Category: {
+        type: DataType.INTEGER.UNSIGNED,
+        allowNull: true
       }
     },
     {

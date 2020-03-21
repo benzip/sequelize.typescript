@@ -1,3 +1,4 @@
+import { ProductCategory } from "./../models/dtos/ProductCategory";
 import { UserRole } from "./../models/dtos/UserRole";
 import { gql } from "apollo-server";
 import { ProductCreateViewModel } from "#root/models/view.models/ProductCreateViewModel";
@@ -9,7 +10,8 @@ export const typeDef = gql`
     Id: ID!
     ProductName: String!
     SearchName: String!
-    UserRoleDTO: [UserRole!]!
+    Category: Int!
+    CategoryDTO: ProductCategory!
   }
 
   type ProductQueryViewModel {
@@ -31,15 +33,21 @@ export const typeDef = gql`
   }
 `;
 
-const createProduct = (context: any, { input }: { input: ProductCreateViewModel }) => {
+const create = (context: any, { input }: { input: ProductCreateViewModel }) => {
   return Product.create(input);
 };
-const getProductList = async (context: any, { pageNum, searchText, withTotalCount }: { pageNum: any; searchText: any; withTotalCount: boolean }) => {
+const getList = async (context: any, { pageNum, searchText, withTotalCount }: { pageNum: any; searchText: any; withTotalCount: boolean }) => {
   let totalCount = -1;
   let queryResult;
   queryResult = await Product.findAll({
     ...paginate((pageNum || 1) - 1, 20),
-    where: { ProductName: { [Op.like]: `%${searchText}%` } }
+    where: { ProductName: { [Op.like]: `%${searchText}%` } },
+    include: [
+      {
+        model: ProductCategory,
+        as: "CategoryDTO"
+      }
+    ]
   });
 
   if (withTotalCount) {
@@ -56,9 +64,9 @@ const getProductList = async (context: any, { pageNum, searchText, withTotalCoun
 
 export const resolvers = {
   Query: {
-    products: getProductList
+    products: getList
   },
   Mutation: {
-    createProduct: createProduct
+    create: create
   }
 };

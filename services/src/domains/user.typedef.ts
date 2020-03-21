@@ -35,7 +35,7 @@ const createUser = async (context: any, { input }: { input: UserCreateViewModel 
   return User.create(input);
 };
 
-const getUserList = () => {
+const getList = () => {
   return User.findAll({
     include: [
       {
@@ -48,7 +48,7 @@ const getUserList = () => {
 
 export const resolvers = {
   Query: {
-    users: getUserList
+    users: getList
   },
   Mutation: {
     createUser: createUser

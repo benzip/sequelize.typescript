@@ -5,7 +5,7 @@ const ListPageLayout = (props: any) => {
   const { searchTextBox, listContent } = props;
   return (
     <React.Fragment>
-      <Row type="flex" justify="end" gutter={[16, 16]}>
+      <Row justify="end" gutter={[16, 16]}>
         <Col span={8}>{searchTextBox}</Col>
       </Row>
       <Row>

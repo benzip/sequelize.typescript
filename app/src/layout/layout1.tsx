@@ -1,4 +1,5 @@
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu } from "antd";
+import { InboxOutlined, UserOutlined, AuditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import ProductListContainer from "../pages/product.list/product.list.container.component";
@@ -18,17 +19,17 @@ const Layout1 = () => {
     {
       path: "/products",
       title: "Products",
-      icon: "inbox"
+      icon: <InboxOutlined></InboxOutlined>
     },
     {
       path: "/users",
       title: "Users",
-      icon: "user"
+      icon: <UserOutlined></UserOutlined>
     },
     {
       path: "/userroles",
       title: "User roles",
-      icon: "audit"
+      icon: <AuditOutlined></AuditOutlined>
     }
   ];
 
@@ -39,7 +40,7 @@ const Layout1 = () => {
         <Menu theme="dark" mode="inline" defaultSelectedKeys={[window.location.pathname]}>
           {routes.map((route: any) => (
             <Menu.Item key={route.path} onClick={() => history.push(route.path)}>
-              <Icon type={route.icon} />
+              {route.icon}
               <span>{route.title}</span>
             </Menu.Item>
           ))}
@@ -47,7 +48,8 @@ const Layout1 = () => {
       </Sider>
       <Layout>
         <Header style={{ background: "#fff", padding: 0 }}>
-          <Icon className="trigger" type={isCollapsed ? "menu-unfold" : "menu-fold"} onClick={() => toggle()} />
+          {!isCollapsed && <MenuFoldOutlined onClick={() => toggle()}></MenuFoldOutlined>}
+          {isCollapsed && <MenuUnfoldOutlined onClick={() => toggle()}></MenuUnfoldOutlined>}
         </Header>
         <Content
           style={{
